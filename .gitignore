@@ -4,3 +4,4 @@
 /Backend/node_modules
 *.user
 *.simp
+package.json
