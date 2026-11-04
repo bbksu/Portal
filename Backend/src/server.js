@@ -12,6 +12,7 @@ dotenv.config({
 	path: "./.env",
 });
 
+// Certificates to allow the backend to use https when dealing with requests and responses
 const secure_options = {
 	key: fs.readFileSync("../certs/server.key"),
 	cert: fs.readFileSync("../certs/server.crt"),
@@ -22,14 +23,10 @@ const HOSTNAME = "localhost";
 const SECUREPORT = process.env.SERVER_PORT_SECURE || 3000
 
 
-// logging //remove
-app.use((req, res, next) => {
-	console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
-	next();
-});
-
+// allow the backend to parse json
 app.use(express.json());
 
+// allow the backend to accept and send requests to frontend domains
 app.use(
 	cors({
 		origin: [`https://${HOSTNAME}:443`, `https://${HOSTNAME}`],
@@ -38,6 +35,7 @@ app.use(
 	}),
 );
 
+// Allow the backend to send and use cookies
 app.use(parser());
 
 // server route decleration
@@ -45,10 +43,6 @@ app.use(serverRoutes)
 
 async function runServer() {
 	try {
-		
-		// const server = app.listen(PORT, hostname, () => {
-		// 	onServerListening(server);
-		// });
 		const httpServer = https.createServer(secure_options, app);
 		httpServer.listen(SECUREPORT, HOSTNAME, () => {
 			onServerListening(httpServer);
