@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Profile</title>
+
+		<link rel="stylesheet" href="src/css/styles.css" />
+	</head>
+
+	<body
+		class="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900"
+	>
+		<div class="container mx-auto px-4 py-10">
+			<!-- Main Card -->
+			<div
+				class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden"
+			>
+				<div class="bg-linear-to-r from-sky-500 to-blue-700 h-40 relative">
+					<!-- User Icon BOX -->
+					<div
+						class="absolute left-1/2 transform -translate-x-1/2 translate-y-20"
+					>
+						<div
+							class="w-32 h-32 bg-white rounded-full shadow-xl flex items-center justify-center border-4 border-white"
+						>
+							<span id="userInitials" class="text-4xl font-bold text-slate-700">
+							</span>
+						</div>
+					</div>
+					<!-- User Icon BOX -->
+				</div>
+
+				<!-- Content -->
+				<div class="pt-24 px-8 pb-8">
+					<!-- Header display area -->
+					<div class="text-center mb-2">
+						<h1 id="user" class="text-3xl font-bold text-slate-800"></h1>
+					</div>
+					<!-- Header display area -->
+					<div class="text-center mb-10">
+						<p id="email" class="text-slate-500 mt-2"></p>
+
+						<div
+							class="flex flex-wrap justify-center gap-6 mt-4 text-sm text-slate-600"
+						>
+							<span id="phone"></span>
+							<span id="dateOfBirth"></span>
+						</div>
+					</div>
+
+					<!-- vertical bar -->
+					<div class="border-b mb-8"></div>
+
+					<!-- Update Form -->
+					<div id="updateContent" style="display: none">
+						<div class="mb-6">
+							<h2 class="text-2xl font-semibold text-slate-800">
+								Update Your Details
+							</h2>
+
+							<p class="text-slate-500">
+								Keep your profile information up to date.
+							</p>
+						</div>
+
+						<!-- Form -->
+						<form id="updateForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<!-- Email -->
+							<div>
+								<label
+									for="emailInput"
+									class="block text-sm font-medium text-slate-700 mb-2"
+								>
+									Email Address
+								</label>
+
+								<input
+									id="emailInput"
+									type="email"
+									placeholder="email@domain.com"
+									class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sky-400 focus:border-sky-400 outline-none transition"
+								/>
+							</div>
+							<!-- Email -->
+
+							<!-- Phone -->
+							<div>
+								<label
+									for="phoneInput"
+									class="block text-sm font-medium text-slate-700 mb-2"
+								>
+									Phone Number
+								</label>
+
+								<input
+									id="phoneInput"
+									type="tel"
+									placeholder="+27 XX XXX XXXX"
+									class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sky-400 focus:border-sky-400 outline-none transition"
+								/>
+							</div>
+							<!-- Phone -->
+
+							<!-- Date of Birth -->
+							<div class="md:col-span-2">
+								<label
+									for="dateInput"
+									class="block text-sm font-medium text-slate-700 mb-2"
+								>
+									Date Of Birth
+								</label>
+
+								<input
+									id="dateInput"
+									type="date"
+									class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sky-400 focus:border-sky-400 outline-none transition"
+								/>
+							</div>
+							<!-- Date of Birth -->
+						</form>
+						<!-- Message -->
+						<div id="updateMessage" class="text-center mt-6"></div>
+
+						<!-- Button -->
+						<div class="flex justify-center mt-8">
+							<button
+								id="SaveButton"
+								type="submit"
+								class="px-10 py-3 bg-linear-to-r from-sky-500 to-blue-600 hover:from-green-500 hover:to-emerald-600 text-white font-semibold rounded-xl shadow-lg transition duration-300 transform hover:scale-105"
+							>
+								Save
+							</button>
+						</div>
+					</div>
+					<!-- Update Form -->
+				</div>
+			</div>
+		</div>
+
+		<script src="src/scripts/profile.js"></script>
+	</body>
+</html>
