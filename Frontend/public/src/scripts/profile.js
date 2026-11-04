@@ -24,13 +24,14 @@ async function requestUserData() {
 const latestUserData = async () => {
 	const dbRequestedUserData = await requestUserData();
 
+	// dont display portions of the profile page if there no user
 	const message = dbRequestedUserData["message"];
 	if (message == "User not found.") {
 		updateContent.style.display = "none";
 	} else {
 		updateContent.style.display = "";
 	}
-
+	// get user data from request if they exist
 	const username = dbRequestedUserData["username"];
 	const email = dbRequestedUserData["email"];
 	const phone = dbRequestedUserData["phone"];
