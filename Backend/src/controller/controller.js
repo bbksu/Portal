@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { userModel } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
+// thie function shows that a user can register and have their password hashed before it is stored in the database
 const registerUser = async (request, response) => {
 	try {
 		const { username, password } = request.body;
@@ -17,10 +18,12 @@ const registerUser = async (request, response) => {
 		if (userExists) {
 			return response.status(400).json({ message: "The user already exists" });
 		}
-		const salt = 10
+		// hash the registered user password with a salt before storing it
+		const salt = 10;
 		const hashedPassword = await bcrypt.hash(password, salt);
 
 		const userDetails = { username: username, password: hashedPassword };
+		// create the new user in the database
 		await userModel.create(userDetails);
 		return response
 			.status(201)
@@ -50,13 +53,13 @@ const loginUser = async (request, response) => {
 			return response.status(404).json({ message: "User not found." });
 		}
 
-		// Check if the password matches the hashed password
+		// Check if the login password matches the hashed password
 		const isHashedPassword = await bcrypt.compare(
 			password,
 			foundUser[0]["password"],
 		);
-		// 
-
+		
+		// if there is no hash password match then return a response
 		if (!isHashedPassword) {
 			return response.status(400).json({ message: "Invalid password." });
 		}
@@ -85,17 +88,15 @@ const loginUser = async (request, response) => {
 			path: "/",
 			maxAge: 43200000,
 		});
-		
+
 		response.status(200).json({ message: "Login successful" });
 	} catch (error) {
-		response.status(500).json({ message: "Server error" });		
+		response.status(500).json({ message: "Server error" });
 	}
 };
 
 // get user data using cookies
 const getUser2Cookie = async (request, response) => {
-	
-
 	// get cookie from header
 	const cookies = request.cookies;
 	// read token and username from cookies
@@ -105,18 +106,19 @@ const getUser2Cookie = async (request, response) => {
 	try {
 		// compare token in cookie using a key
 		const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-		
+
 		const decodedUser = decodedToken["username"];
-		
+
 		var userMissmatch = String(username).trim() === String(decodedUser).trim();
-				
-		if (!userMissmatch) {			
+
+		if (!userMissmatch) {
 			return response.status(404).json({ message: "User not found." });
 		}
 	} catch (error) {
 		return response.status(404).json({ message: "User not found." });
 	}
 
+	// finds the user in the database
 	var foundUser = await userModel
 		.find({ username: username })
 		.select("-password")
@@ -124,7 +126,7 @@ const getUser2Cookie = async (request, response) => {
 	if (foundUser.length == 0) {
 		return response.status(404).json({ message: "User not found." });
 	}
-	
+
 	// format user data from database before sending back
 	const userData = {
 		username: foundUser[0]["username"],
@@ -154,6 +156,7 @@ const updateUser = async (request, response) => {
 	} catch (error) {
 		return response.status(404).json({ message: "User not found." });
 	}
+	// finds the user in the database
 	const userExists = await userModel
 		.findOne({ username: username })
 		.select("-password");
