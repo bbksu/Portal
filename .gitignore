@@ -1,0 +1,6 @@
+/Frontend/node_modules
+/Server/node_modules
+/Frontend/.vscode
+/Backend/node_modules
+*.user
+*.simp
