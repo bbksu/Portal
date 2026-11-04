@@ -10,33 +10,25 @@ dotenv.config({
 });
 
 const app = express();
-const PORT = 8080;
 const SECUREPORT = process.env.SECURE_SERVER_PORT || 8443;
 const HOSTNAME = "localhost";
 const currentFile = fileURLToPath(import.meta.url);
 const directoryOfFile = path.dirname(currentFile);
 const publicFolder = path.join(directoryOfFile, "public");
 
-console.log(currentFile);
-console.log(directoryOfFile);
-console.log(publicFolder);
-
-
 app.use(express.static(publicFolder));
 
+// serve index.html file when on the root directory
 app.get("/", (request, response) => {
 	response.sendFile(path.join(publicFolder, "index.html"));
 });
 
+// serve profile.html  when on the profile directory
 app.get("/profile", (request, response) => {
 	response.sendFile(path.join(publicFolder, "profile.html"));
 });
-// const server = app.listen(PORT, HOSTNAME, () => {
-// 	console.log(
-// 		`Server running on https://${server.address().address}:${server.address().port}`,
-// 	);
-// });
 
+// Certificates for enabling https on the frontend
 const secure_options = {
 	key: fs.readFileSync("../certs/server.key"),
 	cert: fs.readFileSync("../certs/server.crt"),
