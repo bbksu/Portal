@@ -25,10 +25,17 @@ userLoginForm.addEventListener("submit", async (listener) => {
 		},
 	};
 	// Send request with the form and login credentials
-	const apiResponse = await fetch(
+	try {
+		var apiResponse = await fetch(
 		"https://localhost:8443/api/v2/users/login",
 		requestProperties,
 	);
+	} catch (error) {
+		var apiResponse = await fetch(
+		"https://backend-portal-43q8.onrender.com/api/v2/users/login",
+		requestProperties,
+	);	
+	}
 	// Response checking and Error message formatting
 	const reseponseJson = await apiResponse.json();
 	if (apiResponse.status === 400 || apiResponse.status === 404) {

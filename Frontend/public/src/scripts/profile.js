@@ -1,8 +1,9 @@
 // get the button from the DOM
 const updateButton = document.getElementById("SaveButton");
-
 const updateForm = document.getElementById("updateForm");
 const userProfileURL = "https://localhost:8443/api/v2/users/account/profile";
+const platformDomain = "https://backend-portal-43q8.onrender.com";
+const platformURL = `${platformDomain}/api/v2/users/account/profile`;
 const updateContent = document.getElementById("updateContent");
 
 // function to get user data from the database
@@ -14,7 +15,11 @@ async function requestUserData() {
 			"Content-type": "application/json",
 		},
 	};
-	const serverResponse = await fetch(userProfileURL, requestProperties);
+	try {
+		var serverResponse = await fetch(userProfileURL, requestProperties);
+	} catch (error) {
+		var serverResponse = await fetch(`${platformURL}`, requestProperties);
+	}
 	const reseponseJson = await serverResponse.json();
 
 	return reseponseJson;
@@ -78,7 +83,11 @@ const saveDetails = async () => {
 			"Content-type": "application/json",
 		},
 	};
-	var apiResponse = await fetch(userProfileURL, requestProperties);
+	try {
+		var apiResponse = await fetch(userProfileURL, requestProperties);
+	} catch (error) {
+		var apiResponse = await fetch(`${platformURL}`, requestProperties);
+	}
 	var reseponseJson = await apiResponse.json();
 
 	// Display success message after updating the profile
