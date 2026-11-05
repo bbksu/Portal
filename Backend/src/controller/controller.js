@@ -58,7 +58,7 @@ const loginUser = async (request, response) => {
 			password,
 			foundUser[0]["password"],
 		);
-		
+
 		// if there is no hash password match then return a response
 		if (!isHashedPassword) {
 			return response.status(400).json({ message: "Invalid password." });
@@ -114,8 +114,8 @@ const getUser2Cookie = async (request, response) => {
 		if (!userMissmatch) {
 			return response.status(404).json({ message: "User not found." });
 		}
-	} catch (error) {
-		return response.status(404).json({ message: "User not found." });
+	} catch (error) {		
+		return response.status(401).json({ message: "Not authorized." });
 	}
 
 	// finds the user in the database
@@ -154,7 +154,7 @@ const updateUser = async (request, response) => {
 			return response.status(404).json({ message: "User not found." });
 		}
 	} catch (error) {
-		return response.status(404).json({ message: "User not found." });
+		return response.status(401).json({ message: "Not authorized." });
 	}
 	// finds the user in the database
 	const userExists = await userModel
