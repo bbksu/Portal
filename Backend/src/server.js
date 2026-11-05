@@ -12,42 +12,54 @@ dotenv.config({
 	path: "./.env",
 });
 
-// Certificates to allow the backend to use https when dealing with requests and responses
-const secure_options = {
-	key: fs.readFileSync("./certs/server.key"),
-	cert: fs.readFileSync("./certs/server.crt"),
-};
-
 const app = express();
+const PORT = process.env.PORT || 8443;
 const HOSTNAME = "localhost";
-const SECUREPORT = process.env.SERVER_PORT_SECURE || 3000
 
+const isProduction = process.env.NODE_ENV === "production";
 
+// Middleware
 // allow the backend to parse json
 app.use(express.json());
 
+// Allow the backend to send and use cookies
+app.use(parser());
+
+// Cors configurations
 // allow the backend to accept and send requests to frontend domains
+
+const frontendHostUrl = "https://portal-backend-xof0.onrender.com";
+var origin = [`https://${HOSTNAME}:443`, `https://${HOSTNAME}`, frontendHostUrl]
+
 app.use(
 	cors({
-		origin: [`https://${HOSTNAME}:443`, `https://${HOSTNAME}`],
+		origin: origin,
 		methods: ["GET", "POST", "PATCH"],
 		credentials: true,
 	}),
 );
 
-// Allow the backend to send and use cookies
-app.use(parser());
-
 // server route decleration
-app.use(serverRoutes)
+app.use(serverRoutes);
 
 async function runServer() {
-	try {
-		const httpServer = https.createServer(secure_options, app);
-		httpServer.listen(SECUREPORT, HOSTNAME, () => {
-			onServerListening(httpServer);
-		});
-		mongoConnect();
+    try {
+        mongoConnect();
+		if (isProduction) {
+			app.listen(PORT, () => {
+				console.log(`Backend running on port ${PORT}`);
+			});
+		} else {
+			// Certificates to allow the backend to use https when dealing with requests and responses
+			const secure_options = {
+				key: fs.readFileSync("./certs/server.key"),
+				cert: fs.readFileSync("./certs/server.crt"),
+			};
+			const httpServer = https.createServer(secure_options, app);
+			httpServer.listen(PORT, HOSTNAME, () => {
+				onServerListening(httpServer);
+			});			
+		}
 	} catch (error) {
 		ConnectionError(error);
 	}
