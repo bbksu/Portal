@@ -26,8 +26,10 @@ const latestUserData = async () => {
 
 	// dont display portions of the profile page if there no user
 	const message = dbRequestedUserData["message"];
-	if (message == "User not found.") {
+	console.log(message);
+	if (message == "Not authorized.") {
 		updateContent.style.display = "none";
+		return;
 	} else {
 		updateContent.style.display = "";
 	}
