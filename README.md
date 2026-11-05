@@ -44,4 +44,4 @@ npm install
 npm run start
 ```
 
-Paste anGo to `https://localhost` or `https://localhost:443` in the browser
+Paste and Go to `https://localhost` or `https://localhost:443` in the browser
