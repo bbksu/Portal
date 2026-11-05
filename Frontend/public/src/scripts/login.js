@@ -1,7 +1,10 @@
 // function to redirect to the profile page after login
-function redirectToProfilePage() {
-	const profileUrl = location.href + "profile";
-	location.assign(profileUrl);
+function redirectToProfilePage() {	
+	const profileUrl = new URL(window.location.href);
+	profileUrl.pathname = "/profile";
+	profileUrl.search = "";
+	profileUrl.hash = "";	
+	window.location.assign(profileUrl);
 }
 
 const userLoginForm = document.getElementById("loginForm");
@@ -10,7 +13,7 @@ const userLoginForm = document.getElementById("loginForm");
 userLoginForm.addEventListener("submit", async (listener) => {
 	listener.preventDefault();
 	const username = userLoginForm.elements["username"].value;
-	const password = userLoginForm.elements["password"].value;	
+	const password = userLoginForm.elements["password"].value;
 
 	const loginCredentials = { username: username, password: password };
 	const requestProperties = {
@@ -27,16 +30,13 @@ userLoginForm.addEventListener("submit", async (listener) => {
 		requestProperties,
 	);
 	// Response checking and Error message formatting
-	const reseponseJson = await apiResponse.json();	
+	const reseponseJson = await apiResponse.json();
 	if (apiResponse.status === 400 || apiResponse.status === 404) {
 		document.getElementById("errorMessage").textContent = reseponseJson.message;
 		return;
-	}
-	else {
+	} else {
 		document.getElementById("errorMessage").textContent = "";
 	}
-	
-	
+
 	redirectToProfilePage();
 });
-
