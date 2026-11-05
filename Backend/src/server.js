@@ -14,8 +14,8 @@ dotenv.config({
 
 // Certificates to allow the backend to use https when dealing with requests and responses
 const secure_options = {
-	key: fs.readFileSync("../certs/server.key"),
-	cert: fs.readFileSync("../certs/server.crt"),
+	key: fs.readFileSync("./certs/server.key"),
+	cert: fs.readFileSync("./certs/server.crt"),
 };
 
 const app = express();
