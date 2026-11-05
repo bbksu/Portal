@@ -11,7 +11,7 @@
 ### Clone the repository
 
 ```         
-git clone *repo*
+git clone https://github.com/bbksu/Portal
 ```
 
 ## Backend
