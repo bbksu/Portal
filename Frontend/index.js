@@ -30,8 +30,8 @@ app.get("/profile", (request, response) => {
 
 // Certificates for enabling https on the frontend
 const secure_options = {
-	key: fs.readFileSync("../certs/server.key"),
-	cert: fs.readFileSync("../certs/server.crt"),
+	key: fs.readFileSync("./certs/server.key"),
+	cert: fs.readFileSync("./certs/server.crt"),
 };
 
 const httpServer = https.createServer(secure_options, app);
