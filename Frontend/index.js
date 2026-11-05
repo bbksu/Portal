@@ -5,13 +5,10 @@ import https from "https";
 import fs from "fs";
 import dotenv from "dotenv";
 
-dotenv.config({
-	path: "./.env",
-});
+dotenv.config();
 
 const app = express();
-const SECUREPORT = process.env.SECURE_SERVER_PORT || 8443;
-const HOSTNAME = "localhost";
+
 const currentFile = fileURLToPath(import.meta.url);
 const directoryOfFile = path.dirname(currentFile);
 const publicFolder = path.join(directoryOfFile, "public");
@@ -28,13 +25,28 @@ app.get("/profile", (request, response) => {
 	response.sendFile(path.join(publicFolder, "profile.html"));
 });
 
-// Certificates for enabling https on the frontend
-const secure_options = {
-	key: fs.readFileSync("./certs/server.key"),
-	cert: fs.readFileSync("./certs/server.crt"),
-};
+const isProduction = process.env.NODE_ENV === "production";
+if (isProduction) {
+	const PORT = process.env.PORT || 10000;
 
-const httpServer = https.createServer(secure_options, app);
-httpServer.listen(SECUREPORT, HOSTNAME, () => {
-	console.log(`Frontend running on https://${httpServer.address().address}:${httpServer.address().port}`)
-})
+	app.listen(PORT, () => {
+		console.log(`Frontend running on port ${PORT}`);
+	});
+} else {
+	// Only execute when in development
+
+	// Certificates for enabling https on the frontend
+	const secure_options = {
+		key: fs.readFileSync("./certs/server.key"),
+		cert: fs.readFileSync("./certs/server.crt"),
+	};
+
+	const SECUREPORT = process.env.PORT || 443;
+	const HOSTNAME = "localhost";
+	const httpServer = https.createServer(secure_options, app);
+	httpServer.listen(SECUREPORT, HOSTNAME, () => {
+		console.log(
+			`Frontend running on https://${httpServer.address().address}:${httpServer.address().port}`,
+		);
+	});
+}
